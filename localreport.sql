@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jul 19, 2012 at 08:02 PM
+-- Generation Time: Aug 06, 2012 at 02:07 PM
 -- Server version: 5.5.24
 -- PHP Version: 5.3.14
 
@@ -29,6 +29,7 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `audio_files` (
   `audio_id` int(10) NOT NULL AUTO_INCREMENT,
   `audio_file` text NOT NULL,
+  `remote_audio_file` text NOT NULL,
   `audio_ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `participant_id` int(11) NOT NULL,
   `performance_id` int(11) NOT NULL,
@@ -104,8 +105,8 @@ CREATE TABLE IF NOT EXISTS `video_files` (
 -- Constraints for table `audio_files`
 --
 ALTER TABLE `audio_files`
-  ADD CONSTRAINT `audio_files_ibfk_2` FOREIGN KEY (`performance_id`) REFERENCES `performances` (`peformance_id`),
-  ADD CONSTRAINT `audio_files_ibfk_1` FOREIGN KEY (`participant_id`) REFERENCES `participants` (`participant_id`);
+  ADD CONSTRAINT `audio_files_ibfk_1` FOREIGN KEY (`participant_id`) REFERENCES `participants` (`participant_id`),
+  ADD CONSTRAINT `audio_files_ibfk_2` FOREIGN KEY (`performance_id`) REFERENCES `performances` (`peformance_id`);
 
 --
 -- Constraints for table `participants`
@@ -117,8 +118,8 @@ ALTER TABLE `participants`
 -- Constraints for table `video_files`
 --
 ALTER TABLE `video_files`
-  ADD CONSTRAINT `video_files_ibfk_2` FOREIGN KEY (`performance_id`) REFERENCES `performances` (`peformance_id`),
-  ADD CONSTRAINT `video_files_ibfk_1` FOREIGN KEY (`participant_id`) REFERENCES `participants` (`participant_id`);
+  ADD CONSTRAINT `video_files_ibfk_1` FOREIGN KEY (`participant_id`) REFERENCES `participants` (`participant_id`),
+  ADD CONSTRAINT `video_files_ibfk_2` FOREIGN KEY (`performance_id`) REFERENCES `performances` (`peformance_id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
