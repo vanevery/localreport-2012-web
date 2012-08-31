@@ -48,6 +48,8 @@ function sqlConnect()
 
 function sqlQuery($query) 
 {	
+	global $mySql;
+	
 	//$query = "select somefield from exampletable";
 
 	$data = null; 
@@ -82,6 +84,12 @@ function sqlQuery($query)
 function sqlUpdate($query)
 {
 	global $mySql;
+
+	if (DEBUG_MODE && DEBUG_SHOW_SQL)
+	{
+		echo "<br \>\n" . $query . "<br \>\n";
+	}
+	
 	$result = mysql_query($query, $mySql);
 	reportMysqlError();
 	return $result;
@@ -90,6 +98,12 @@ function sqlUpdate($query)
 function sqlInsert($query, $return_id = false)
 {
 	global $mySql;
+
+	if (DEBUG_MODE && DEBUG_SHOW_SQL)
+	{
+		echo "<br \>\n" . $query . "<br \>\n";
+	}
+	
 	$result = mysql_query($query, $mySql);
 	reportMysqlError($query);
 	if ($return_id == true)
@@ -112,6 +126,13 @@ function sqlInsert($query, $return_id = false)
 function sqlDelete($query)
 {
 	global $mySql;
+
+	if (DEBUG_MODE && DEBUG_SHOW_SQL)
+	{
+		echo "<br \>\n" . $query . "<br \>\n";
+	}
+	
+	
 	$result = mysql_query($query, $mySql);
 	reportMysqlError();
 	return $result;

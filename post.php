@@ -18,17 +18,34 @@ if (isset($_POST['form_submitted']) && $_POST['form_submitted'] == "true")
 		// Make sure the file isn't executable and you can delete it if you need
 		chmod($uploadfilepath, 0666);
 		
+		sqlConnect();
+
 		$participant_id = DEFAULT_PARTICIPANT_ID;
 		if (isset($_POST['participant_id'])) {
 			$participant_id = $_POST['participant_id'];
+		} else if (isset($_POST['participant_device_id'])) {
+			$sqlSelectParticipantId = "select participant_id from participants where participant_device_id = '".$_POST['participant_device_id']."'";
+			$rsSelectParticipantId = sqlQuery($sqlSelectParticipantId);
+			if (sizeof($rsSelectParticipantId) > 0) {
+				$participant_id = $rsSelectParticipantId[0]['participant_id'];
+			} else {
+				$insertParticipant = "insert into participants (participant_device_id) values ('".mysql_real_escape_string($_POST['participant_device_id'])."')";
+				$participant_id = sqlInsert($insertParticipant, true);
+			}
 		}
 		
-		sqlConnect();
+		$latitude = "";
+		$longitude = "";
+		if (isset($_POST['latitude']) && isset($_POST['longitude'])) {
+			$latitude = $_POST['latitude'];
+			$longitude = $_POST['longitude'];
+		}
+		
 		
 		if (isset($_POST['audio_or_video']) && $_POST['audio_or_video'] == "audio") {
-			sqlInsert("insert into audio_files (audio_file, participant_id, performance_id) values ('$uploadfilename', $participant_id, CURRENT_PERFORMANCE_ID)");
+			sqlInsert("insert into audio_files (audio_file, participant_id, performance_id, latitude, longitude) values ('".$uploadfilename."', ".$participant_id.", ".CURRENT_PERFORMANCE_ID.", '".$latitude."','".$longitude."')");
 		} else {
-			sqlInsert("insert into video_files (video_file, participant_id, performance_id) values ('$uploadfilename', $participant_id, CURRENT_PERFORMANCE_ID)");		
+			sqlInsert("insert into video_files (video_file, participant_id, performance_id, latitude, longitude) values ('".$uploadfilename."', ".$participant_id.", ".CURRENT_PERFORMANCE_ID.", '".$latitude."','".$longitude."')");		
 		}
 		
 		echo("Uploaded Succeeded!");
